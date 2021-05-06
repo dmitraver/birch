@@ -15,7 +15,7 @@ dependencies {
 }
 
 application {
-    mainClass = 'com.github.dmitraver.birch.Main'
+    mainClass = 'com.github.dmitraver.birch.server.Main'
 }
 
 test {
