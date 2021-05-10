@@ -1,6 +1,7 @@
 package com.github.dmitraver.birch.server;
 
 import com.github.dmitraver.birch.protocol.RequestParser;
+import com.github.dmitraver.birch.protocol.RequestParsingException;
 import com.github.dmitraver.birch.protocol.requests.QuitRequest;
 import com.github.dmitraver.birch.protocol.requests.Request;
 
@@ -10,7 +11,6 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Optional;
 
 public class Main {
 
@@ -29,24 +29,22 @@ public class Main {
 
                     String line;
                     while ((line = reader.readLine()) != null) {
-                        Optional<Request> requestOpt = requestParser.parse(line);
-                        if (!requestOpt.isPresent()) {
-                            writer.println("Unknown request...");
-                        } else {
-                            // boy this is ugly in java, look for a better way
-                            Request request = requestOpt.get();
+                        try {
+                            Request request = requestParser.parse(line);
                             if (request instanceof QuitRequest) {
                                 writer.println("Cya soon...");
                                 break;
                             }
 
                             writer.println("Processing...");
+                        } catch (RequestParsingException e) {
+                            writer.println("-ERR unknown request type");
                         }
                     }
                 }
             }
         } catch (IOException e) {
-            System.out.println("Opps, exception " + e.getMessage());
+            System.err.println("Opps, exception " + e.getMessage());
         }
     }
 }
