@@ -1,6 +1,7 @@
 package com.github.dmitraver.birch.server;
 
 import com.github.dmitraver.birch.protocol.RequestParser;
+import com.github.dmitraver.birch.server.client.ClientHandler;
 
 import java.io.IOException;
 import java.net.ServerSocket;

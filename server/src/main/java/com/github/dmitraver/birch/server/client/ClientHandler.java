@@ -1,4 +1,4 @@
-package com.github.dmitraver.birch.server;
+package com.github.dmitraver.birch.server.client;
 
 import com.github.dmitraver.birch.protocol.RequestParser;
 import com.github.dmitraver.birch.protocol.RequestParsingException;
