@@ -1,6 +1,6 @@
 package com.github.dmitraver.birch.protocol.requests;
 
-public final class PutRequest implements Request {
+public final class PutRequest implements WriteRequest {
 
     private String key;
     private String value;

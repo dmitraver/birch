@@ -1,6 +1,6 @@
 package com.github.dmitraver.birch.protocol.requests;
 
-public final class GetRequest implements Request {
+public final class GetRequest implements ReadRequest {
 
     private final String key;
 
