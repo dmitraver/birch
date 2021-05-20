@@ -5,19 +5,18 @@ import com.github.dmitraver.birch.server.processors.RequestProcessor;
 import com.github.dmitraver.birch.server.utils.Tuple;
 
 import java.util.Optional;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
-public class SingularUpdateQueue<Request, Response> implements Runnable {
+abstract class RequestsQueue<Request, Response> {
 
-    private static final int MAX_QUEUE_CAPACITY = 100;
-
-    private ArrayBlockingQueue<Tuple<Request, CompletableFuture<Response>>> queue = new ArrayBlockingQueue<>(MAX_QUEUE_CAPACITY);
+    private final BlockingQueue<Tuple<Request, CompletableFuture<Response>>> queue;
     private RequestProcessor<Request, Response> requestProcessor;
+    private ExecutorService executor;
 
-    public SingularUpdateQueue(RequestProcessor<Request, Response> requestProcessor) {
+    public RequestsQueue(BlockingQueue<Tuple<Request, CompletableFuture<Response>>> queue, RequestProcessor<Request, Response> requestProcessor, ExecutorService executor) {
+        this.queue = queue;
         this.requestProcessor = requestProcessor;
+        this.executor = executor;
     }
 
     public CompletableFuture<Response> submit(Request request) {
@@ -25,26 +24,22 @@ public class SingularUpdateQueue<Request, Response> implements Runnable {
             CompletableFuture<Response> future = new CompletableFuture<>();
             Tuple<Request, CompletableFuture<Response>> requestAndResponse = new Tuple<>(request, future);
             queue.put(requestAndResponse);
+            executor.submit(() -> {
+                Optional<Tuple<Request, CompletableFuture<Response>>> result = take();
+                result.ifPresent(tuple -> {
+                    CompletableFuture<Response> responseFuture = tuple.getRight();
+
+                    try {
+                        Response response = requestProcessor.process(tuple.getLeft());
+                        responseFuture.complete(response);
+                    } catch (RequestProcessingException e) {
+                        responseFuture.completeExceptionally(e);
+                    }
+                });
+            });
             return future;
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public void run() {
-        while (true) {
-            Optional<Tuple<Request, CompletableFuture<Response>>> requestAndResponse = take();
-            requestAndResponse.ifPresent(tuple -> {
-                CompletableFuture<Response> responseFuture = tuple.getRight();
-
-                try {
-                    Response response = requestProcessor.process(tuple.getLeft());
-                    responseFuture.complete(response);
-                } catch (RequestProcessingException e) {
-                    responseFuture.completeExceptionally(e);
-                }
-            });
         }
     }
 
@@ -54,5 +49,9 @@ public class SingularUpdateQueue<Request, Response> implements Runnable {
         } catch (InterruptedException e) {
             return Optional.empty();
         }
+    }
+
+    public void shutdown() {
+        executor.shutdown();
     }
 }
