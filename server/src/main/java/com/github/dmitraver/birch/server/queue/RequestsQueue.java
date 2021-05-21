@@ -45,7 +45,7 @@ abstract class RequestsQueue<Request, Response> {
 
     private Optional<Tuple<Request, CompletableFuture<Response>>> take() {
         try {
-            return Optional.ofNullable(queue.poll(300, TimeUnit.MILLISECONDS));
+            return Optional.of(queue.take());
         } catch (InterruptedException e) {
             return Optional.empty();
         }

@@ -4,21 +4,27 @@ import com.github.dmitraver.birch.protocol.RequestParser;
 import com.github.dmitraver.birch.protocol.RequestParsingException;
 import com.github.dmitraver.birch.protocol.requests.QuitRequest;
 import com.github.dmitraver.birch.protocol.requests.Request;
+import com.github.dmitraver.birch.server.queue.RequestDispatcher;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 public final class ClientHandler implements Runnable {
 
     private Socket clientSocket;
     private RequestParser requestParser;
+    private RequestDispatcher dispatcher;
 
-    public ClientHandler(Socket clientSocket, RequestParser parser) {
+    public ClientHandler(Socket clientSocket, RequestParser parser, RequestDispatcher dispatcher) {
         this.clientSocket = clientSocket;
         this.requestParser = parser;
+        this.dispatcher = dispatcher;
     }
 
     @Override
@@ -37,9 +43,17 @@ public final class ClientHandler implements Runnable {
                         break;
                     }
 
-                    writer.println("Processing...");
+                    Optional<CompletableFuture<Optional<String>>> resultOpt = dispatcher.dispatchRequest(request);
+                    if(resultOpt.isPresent()) {
+                        Optional<String> result = resultOpt.get().get();
+                        writer.println(result.orElse("null"));
+                    } else {
+                        writer.println("-ERR request was interrupted on the server");
+                    }
                 } catch (RequestParsingException e) {
                     writer.println("-ERR unknown request type");
+                } catch (ExecutionException | InterruptedException e) {
+                    writer.println("-ERR request processing interrupted");
                 }
             }
         } catch (IOException e) {

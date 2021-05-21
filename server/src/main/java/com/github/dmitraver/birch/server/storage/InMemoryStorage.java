@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public class InMemoryStorage<K, V> implements Storage<String, String> {
+public final class InMemoryStorage<K, V> implements Storage<String, String> {
 
     private Map<String, String> map = new HashMap<>();
 
