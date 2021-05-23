@@ -21,13 +21,13 @@ import java.util.concurrent.Executors;
 
 public class Main {
 
-    private static Storage<String, String> storage = new InMemoryStorage<String, String>();
-    private static ReadRequestProcessor readRequestProcessor = new ReadRequestProcessor(storage);
-    private static WriteRequestProcessor writeRequestProcessor = new WriteRequestProcessor(storage);
+    private final static Storage<String, String> storage = new InMemoryStorage<String, String>();
+    private final static ReadRequestProcessor readRequestProcessor = new ReadRequestProcessor(storage);
+    private final static WriteRequestProcessor writeRequestProcessor = new WriteRequestProcessor(storage);
 
-    private static ReadRequestsQueue<ReadRequest, Optional<String>> readRequestsQueue = new ReadRequestsQueue<>(readRequestProcessor);
-    private static WriteRequestsQueue<WriteRequest, Optional<String>> writeRequestsQueue = new WriteRequestsQueue<>(writeRequestProcessor);
-    private static RequestDispatcher dispatcher = new RequestDispatcher(readRequestsQueue, writeRequestsQueue);
+    private final static ReadRequestsQueue<ReadRequest, Optional<String>> readRequestsQueue = new ReadRequestsQueue<>(readRequestProcessor);
+    private final static WriteRequestsQueue<WriteRequest, Optional<String>> writeRequestsQueue = new WriteRequestsQueue<>(writeRequestProcessor);
+    private final static RequestDispatcher<Optional<String>> dispatcher = new RequestDispatcher<>(readRequestsQueue, writeRequestsQueue);
 
     public static void main(String[] args) {
         int port = 9999;
