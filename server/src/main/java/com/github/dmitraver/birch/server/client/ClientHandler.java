@@ -17,11 +17,11 @@ import java.util.concurrent.ExecutionException;
 
 public final class ClientHandler implements Runnable {
 
-    private Socket clientSocket;
-    private RequestParser requestParser;
-    private RequestDispatcher dispatcher;
+    private final Socket clientSocket;
+    private final RequestParser requestParser;
+    private final RequestDispatcher<Optional<String>> dispatcher;
 
-    public ClientHandler(Socket clientSocket, RequestParser parser, RequestDispatcher dispatcher) {
+    public ClientHandler(Socket clientSocket, RequestParser parser, RequestDispatcher<Optional<String>> dispatcher) {
         this.clientSocket = clientSocket;
         this.requestParser = parser;
         this.dispatcher = dispatcher;
