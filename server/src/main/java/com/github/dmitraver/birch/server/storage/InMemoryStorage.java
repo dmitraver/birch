@@ -4,19 +4,19 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public final class InMemoryStorage<K, V> implements Storage<String, String> {
+public final class InMemoryStorage<K, V> implements Storage<K, V> {
 
-    private Map<String, String> map = new HashMap<>();
+    private final Map<K, V> map = new HashMap<>();
 
     @Override
-    public Optional<String> put(String key, String value) {
-        String oldValue = map.put(key, value);
+    public Optional<V> put(K key, V value) {
+        V oldValue = map.put(key, value);
         return Optional.ofNullable(oldValue);
     }
 
     @Override
-    public Optional<String> get(String key) {
-        String value = map.get(key);
+    public Optional<V> get(K key) {
+        V value = map.get(key);
         return Optional.ofNullable(value);
     }
 }
