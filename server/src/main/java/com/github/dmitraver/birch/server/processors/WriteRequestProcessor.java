@@ -6,6 +6,9 @@ import com.github.dmitraver.birch.server.storage.Storage;
 
 import java.util.Optional;
 
+/**
+ * Processor that takes a write request and executes it against the underlying storage and returns result.
+ */
 public final class WriteRequestProcessor implements RequestProcessor<WriteRequest, Optional<String>> {
 
     private Storage<String, String> storage;

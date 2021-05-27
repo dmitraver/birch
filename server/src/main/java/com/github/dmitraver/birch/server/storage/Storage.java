@@ -2,6 +2,11 @@ package com.github.dmitraver.birch.server.storage;
 
 import java.util.Optional;
 
+/**
+ * Storage interface defines main operations that key value storage supports.
+ * @param <K> type of the key
+ * @param <V> type of the value
+ */
 public interface Storage<K, V> {
 
     /**

@@ -38,6 +38,7 @@ public final class ClientHandler implements Runnable {
             while ((line = reader.readLine()) != null) {
                 try {
                     Request request = requestParser.parse(line);
+                    // TODO get rid of those type checks...
                     if (request instanceof QuitRequest) {
                         writer.println("Cya soon...");
                         break;

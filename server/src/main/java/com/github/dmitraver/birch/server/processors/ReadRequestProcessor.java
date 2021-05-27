@@ -6,6 +6,9 @@ import com.github.dmitraver.birch.server.storage.Storage;
 
 import java.util.Optional;
 
+/**
+ * Processor that takes a read request and executes it against the underlying storage and returns result.
+ */
 public final class ReadRequestProcessor implements RequestProcessor<ReadRequest, Optional<String>> {
 
     private Storage<String, String> storage;

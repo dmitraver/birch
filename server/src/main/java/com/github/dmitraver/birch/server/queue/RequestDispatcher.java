@@ -7,6 +7,11 @@ import com.github.dmitraver.birch.protocol.requests.WriteRequest;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
+/***
+ * Dispatches request to the appropriate queue for the processing.
+ * Write requests are appended to single thread processing queue to avoid the need for synchronization.
+ * Read requests are appended to multi threaded processing queue which allows parallelization of requests processing.
+ */
 public final class RequestDispatcher<Response> {
 
     private ReadRequestsQueue<ReadRequest, Response> readRequestsQueue;
