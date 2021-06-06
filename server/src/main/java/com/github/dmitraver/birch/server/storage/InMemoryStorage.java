@@ -1,12 +1,12 @@
 package com.github.dmitraver.birch.server.storage;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 public final class InMemoryStorage<K, V> implements Storage<K, V> {
 
-    private final Map<K, V> map = new HashMap<>();
+    private final Map<K, V> map = new ConcurrentHashMap<>();
 
     @Override
     public Optional<V> put(K key, V value) {
