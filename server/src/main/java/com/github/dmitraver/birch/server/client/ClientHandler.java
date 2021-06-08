@@ -1,9 +1,9 @@
 package com.github.dmitraver.birch.server.client;
 
-import com.github.dmitraver.birch.protocol.RequestParser;
-import com.github.dmitraver.birch.protocol.RequestParsingException;
-import com.github.dmitraver.birch.protocol.requests.QuitRequest;
-import com.github.dmitraver.birch.protocol.requests.Request;
+import com.github.dmitraver.birch.server.requests.Request;
+import com.github.dmitraver.birch.server.requests.RequestParser;
+import com.github.dmitraver.birch.server.requests.RequestParsingException;
+import com.github.dmitraver.birch.server.requests.Requests;
 import com.github.dmitraver.birch.server.queue.RequestDispatcher;
 
 import java.io.BufferedReader;
@@ -37,13 +37,12 @@ public final class ClientHandler implements Runnable {
             String line;
             while ((line = reader.readLine()) != null) {
                 try {
-                    Request request = requestParser.parse(line);
-                    // TODO get rid of those type checks...
-                    if (request instanceof QuitRequest) {
+                    if (line.startsWith(Requests.QUIT)) {
                         writer.println("Cya soon...");
                         break;
                     }
 
+                    Request request = requestParser.parse(line);
                     Optional<CompletableFuture<Optional<String>>> resultOpt = dispatcher.dispatchRequest(request);
                     if(resultOpt.isPresent()) {
                         Optional<String> result = resultOpt.get().get();

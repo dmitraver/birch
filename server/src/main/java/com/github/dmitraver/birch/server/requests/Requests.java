@@ -1,4 +1,4 @@
-package com.github.dmitraver.birch.protocol;
+package com.github.dmitraver.birch.server.requests;
 
 public final class Requests {
     public static final String PUT = "PUT";

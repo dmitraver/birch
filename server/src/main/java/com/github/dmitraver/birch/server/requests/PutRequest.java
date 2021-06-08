@@ -1,4 +1,4 @@
-package com.github.dmitraver.birch.protocol.requests;
+package com.github.dmitraver.birch.server.requests;
 
 public final class PutRequest implements WriteRequest {
 

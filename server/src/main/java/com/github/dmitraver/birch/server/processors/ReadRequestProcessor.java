@@ -1,7 +1,7 @@
 package com.github.dmitraver.birch.server.processors;
 
-import com.github.dmitraver.birch.protocol.requests.GetRequest;
-import com.github.dmitraver.birch.protocol.requests.ReadRequest;
+import com.github.dmitraver.birch.server.requests.GetRequest;
+import com.github.dmitraver.birch.server.requests.ReadRequest;
 import com.github.dmitraver.birch.server.storage.Storage;
 
 import java.util.Optional;

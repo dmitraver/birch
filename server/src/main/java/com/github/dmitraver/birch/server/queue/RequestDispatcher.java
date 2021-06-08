@@ -1,8 +1,8 @@
 package com.github.dmitraver.birch.server.queue;
 
-import com.github.dmitraver.birch.protocol.requests.ReadRequest;
-import com.github.dmitraver.birch.protocol.requests.Request;
-import com.github.dmitraver.birch.protocol.requests.WriteRequest;
+import com.github.dmitraver.birch.server.requests.ReadRequest;
+import com.github.dmitraver.birch.server.requests.Request;
+import com.github.dmitraver.birch.server.requests.WriteRequest;
 
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;

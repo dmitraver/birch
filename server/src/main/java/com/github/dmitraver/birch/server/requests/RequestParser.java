@@ -1,11 +1,4 @@
-package com.github.dmitraver.birch.protocol;
-
-import com.github.dmitraver.birch.protocol.requests.GetRequest;
-import com.github.dmitraver.birch.protocol.requests.PutRequest;
-import com.github.dmitraver.birch.protocol.requests.QuitRequest;
-import com.github.dmitraver.birch.protocol.requests.Request;
-
-import java.util.Optional;
+package com.github.dmitraver.birch.server.requests;
 
 public final class RequestParser {
 
@@ -21,8 +14,6 @@ public final class RequestParser {
             return new GetRequest(args[1]);
         } else if (requestType.equals(Requests.PUT) && args.length == 3) {
             return new PutRequest(args[1], args[2]);
-        } else if (requestType.equals(Requests.QUIT) && args.length == 1) {
-            return new QuitRequest();
         } else {
             throw new RequestParsingException("Can't parse request, unknown request type or wrong number of params");
         }

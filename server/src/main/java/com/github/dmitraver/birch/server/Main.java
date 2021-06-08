@@ -1,8 +1,8 @@
 package com.github.dmitraver.birch.server;
 
-import com.github.dmitraver.birch.protocol.RequestParser;
-import com.github.dmitraver.birch.protocol.requests.ReadRequest;
-import com.github.dmitraver.birch.protocol.requests.WriteRequest;
+import com.github.dmitraver.birch.server.requests.ReadRequest;
+import com.github.dmitraver.birch.server.requests.RequestParser;
+import com.github.dmitraver.birch.server.requests.WriteRequest;
 import com.github.dmitraver.birch.server.client.ClientHandler;
 import com.github.dmitraver.birch.server.processors.ReadRequestProcessor;
 import com.github.dmitraver.birch.server.processors.WriteRequestProcessor;
